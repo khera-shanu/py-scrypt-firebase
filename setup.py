@@ -101,8 +101,8 @@ scrypt_module = Extension(
     library_dirs=library_dirs,
     libraries=libraries)
 
-setup(name='pyscryptfirebase',
-      version='0.0.2',
+setup(name='pyscryptfirebase-odin',
+      version='0.0.1',
       description='Python wrapper for the Firebase scrypt password hashing utility',
       author='Matt Simpson',
       author_email='mcsimps2@gmail.com',

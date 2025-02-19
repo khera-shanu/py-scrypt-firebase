@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import imp
+import importlib.util
 import sys
 
 from ctypes import (cdll,
@@ -10,7 +10,11 @@ from ctypes import (cdll,
 
 __version__ = '0.8.13'
 
-_scrypt = cdll.LoadLibrary(imp.find_module('_scrypt')[1])
+# Find and load the _scrypt module
+_scrypt_spec = importlib.util.find_spec('_scrypt')
+if _scrypt_spec is None:
+    raise ImportError("Could not find _scrypt module")
+_scrypt = cdll.LoadLibrary(_scrypt_spec.origin)
 
 _scryptenc_buf_saltlen = _scrypt.exp_scryptenc_buf_saltlen
 _scryptenc_buf_saltlen.argtypes = [c_char_p,  # const uint_t  *inbuf
@@ -46,6 +50,10 @@ MAXTIME_DEFAULT = 300.0
 MAXTIME_DEFAULT_ENC = 5.0
 
 IS_PY2 = sys.version_info < (3, 0, 0, 'final', 0)
+
+# For Python 3 compatibility
+if not IS_PY2:
+    unicode = str
 
 
 class error(Exception):
